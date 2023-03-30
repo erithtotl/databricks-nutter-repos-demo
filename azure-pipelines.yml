@@ -73,6 +73,7 @@ stages:
 # separate repo for each commit
     - script: |
         echo "Checking out the $(branchName) branch"
+        echo "directory: $(STAGING_DIRECTORY) $(CLUSTER_ID)"
         databricks repos update --path $(STAGING_DIRECTORY) --branch "$(branchName)"
       env:
         DATABRICKS_HOST: $(DATABRICKS_HOST)
@@ -80,7 +81,6 @@ stages:
       displayName: 'Update Staging project'
 
     - script: |
-        echo "directory: $(STAGING_DIRECTORY)/unit-tests/ $(CLUSTER_ID)"
         nutter run "$(STAGING_DIRECTORY)/unit-tests/" --cluster_id $(CLUSTER_ID) --recursive --junit_report --timeout 500
       env:
         DATABRICKS_HOST: $(DATABRICKS_HOST)
